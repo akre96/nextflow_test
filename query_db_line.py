@@ -5,6 +5,7 @@ import sys, os
 
 if os.environ.get("DB_NAME") is None:
     # Stores database credentials in to environment variables
+    print('SETTING ENVIRONMENT FROM .env')
     load_dotenv('.env')
 
 
@@ -17,6 +18,9 @@ def connect_db(study) -> psycopg2.connect:
     if study not in ['phase1', 'pilot']:
         raise ValueError('Study must be set to phase 1 or pilot')
 
+    
+    if os.environ.get("DB_NAME") is None:
+        raise ValueError('Set environmental variables for database connection')
     host = os.environ.get('DB_HOST')
     dbname = os.environ.get('DB_NAME')
     user = os.environ.get('DB_USER')
