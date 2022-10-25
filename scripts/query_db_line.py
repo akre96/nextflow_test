@@ -3,10 +3,6 @@ import psycopg2
 from dotenv import load_dotenv
 import sys, os
 
-if os.environ.get("DB_NAME") is None:
-    # Stores database credentials in to environment variables
-    print('SETTING ENVIRONMENT FROM .env')
-    load_dotenv('.env')
 
 
 def connect_db(study) -> psycopg2.connect:
@@ -40,6 +36,11 @@ def connect_db(study) -> psycopg2.connect:
 
 
 if __name__ == '__main__':
+    if os.environ.get("DB_NAME") is None:
+        # Stores database credentials in to environment variables
+        print('SETTING ENVIRONMENT FROM ', sys.argv[2])
+        load_dotenv(sys.argv[2])
+    
     conn = connect_db(sys.argv[1])
     data = pd.read_sql(
         """

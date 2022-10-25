@@ -1,22 +1,22 @@
 #!/usr/bin/env nextflow
  params.study = 'pilot'
- project_dir = projectDir
+ params.env_file= projectDir + '/.env'
+ params.script_dir = projectDir + '/scripts'
  
-/*
- * A trivial Perl script that produces a list of number pairs
- */
 process query_db_line{
     input:
         val study
+        path env_file
+        path script_dir
     output:
         stdout
  
     shell:
     '''
-    python !{project_dir}/query_db_line.py !{study}
+    python !{script_dir}/query_db_line.py !{study} !{env_file}
     '''
 }
  
 workflow {
-    query_db_line(params.study)
+    query_db_line(params.study, params.env_file, params.script_dir)
 }
